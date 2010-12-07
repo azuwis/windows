@@ -21,15 +21,15 @@ set "qq_ad_dir=%appdata%\Tencent\QQ\Misc\com.tencent.advertisement"
 echo 删除 %qq_ad_dir% 里面的文件
 del /q %qq_ad_dir%
 echo 禁止当前用户往 %qq_ad_dir% 里写文件
-cacls %qq_ad_dir% /e /d %userdomain%\%username%
-cacls %qq_ad_dir% /e /p %userdomain%\%username%:r
+cacls "%qq_ad_dir%" /e /d "%userdomain%\%username%"
+cacls "%qq_ad_dir%" /e /p "%userdomain%\%username%:r"
 
 echo --------------------------------------------------------------------------------
 echo 去掉聊天窗口左下角文字广告：
-for /d %%x in (%appdata%\Tencent\Users\*) do (
+for /d %%x in ("%appdata%\Tencent\Users\*") do (
   echo 删除文件 %%x\QQ\Misc.db，并创建同名文件夹
-  del /q %%x\QQ\Misc.db
-  md %%x\QQ\Misc.db
+  del /q "%%x\QQ\Misc.db"
+  md "%%x\QQ\Misc.db"
 )
 echo --------------------------------------------------------------------------------
 echo 完成
