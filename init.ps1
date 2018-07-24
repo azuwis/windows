@@ -17,6 +17,19 @@ if (-not (Get-AppxPackage -Name TheDebianProject.DebianGNULinux)) {
     Start-Process "ms-windows-store://pdp/?ProductId=9MSVKQC78PK6"
 }
 
+# install qterminal
+$url = "https://github.com/kghost/qterminal/releases/download/0.9.0-wsl.1/QTerminal.X64.zip"
+$zip = "$Home\Downloads\QTerminal.X64.zip"
+$dir = "C:\Programs"
+if (-not (Test-Path "$dir\QTerminal")) {
+    if (-not (Test-Path $zip)) {
+        Import-Module BitsTransfer
+        Start-BitsTransfer -Source $url -Destination $zip
+    }
+    $shell = new-object -com shell.application
+    $shell.NameSpace($dir).copyhere($shell.NameSpace($zip).Items())
+}
+
 # auto start sshd
 $sshd = [environment]::getfolderpath("Startup") + "\sshd.lnk"
 if (-Not (Test-Path $sshd)) {
