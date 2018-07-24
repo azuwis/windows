@@ -7,6 +7,17 @@ try {
     regedit /s "$dir\switch-capslock-ctrl.reg"
 }
 
+# install firefox
+$url = "https://download.mozilla.org/?product=firefox-latest&os=win64&lang=en-US"
+$output = "$Home\Downloads\firefox-installer.exe"
+if (-not (Test-Path "C:\Program Files\Mozilla Firefox")) {
+    if (-not (Test-Path $output)) {
+        Import-Module BitsTransfer
+        Start-BitsTransfer -Source $url -Destination $output
+    }
+    Start-Process $output -ArgumentList /S
+}
+
 # install weasel
 $url = "https://dl.bintray.com/rime/weasel/weasel-0.11.1.0-installer.exe"
 $output = "$Home\Downloads\weasel-0.11.1.0-installer.exe"
