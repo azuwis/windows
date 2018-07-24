@@ -7,6 +7,17 @@ try {
     regedit /s "$dir\switch-capslock-ctrl.reg"
 }
 
+# install weasel
+$url = "https://dl.bintray.com/rime/weasel/weasel-0.11.1.0-installer.exe"
+$output = "$Home\Downloads\weasel-0.11.1.0-installer.exe"
+if (-not (Test-Path "C:\Program Files (x86)\Rime")) {
+    if (-not (Test-Path $output)) {
+        Import-Module BitsTransfer
+        Start-BitsTransfer -Source $url -Destination $output
+    }
+    Start-Process $output -ArgumentList /S
+}
+
 # create programs dir
 $programs = "C:\Programs"
 if (-not (Test-Path $programs)) {
