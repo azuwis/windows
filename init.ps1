@@ -7,6 +7,12 @@ try {
     regedit /s "$dir\switch-capslock-ctrl.reg"
 }
 
+# create programs dir
+$programs = "C:\Programs"
+if (-not (Test-Path $programs)) {
+    mkdir -Path $programs
+}
+
 # enable wsl
 if (-not (Test-Path "C:\Windows\System32\wsl.exe")) {
     Start-Process powershell -Verb runAs -ArgumentList "Enable-WindowsOptionalFeature -Online -FeatureName Microsoft-Windows-Subsystem-Linux"
@@ -20,14 +26,13 @@ if (-not (Get-AppxPackage -Name TheDebianProject.DebianGNULinux)) {
 # install qterminal
 $url = "https://github.com/kghost/qterminal/releases/download/0.9.0-wsl.1/QTerminal.X64.zip"
 $zip = "$Home\Downloads\QTerminal.X64.zip"
-$dir = "C:\Programs"
-if (-not (Test-Path "$dir\QTerminal")) {
+if (-not (Test-Path "$programs\QTerminal")) {
     if (-not (Test-Path $zip)) {
         Import-Module BitsTransfer
         Start-BitsTransfer -Source $url -Destination $zip
     }
     $shell = new-object -com shell.application
-    $shell.NameSpace($dir).copyhere($shell.NameSpace($zip).Items())
+    $shell.NameSpace($programs).copyhere($shell.NameSpace($zip).Items())
 }
 
 # auto start sshd
