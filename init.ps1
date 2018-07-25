@@ -6,7 +6,7 @@ function InstallUrl {
     if (-not (Get-ItemProperty HKLM:\Software\Microsoft\Windows\CurrentVersion\Uninstall\*,HKLM:\Software\Wow6432Node\Microsoft\Windows\CurrentVersion\Uninstall\* |  ? { $_.DisplayName -match $Name })) {
         if (-not (Test-Path $output)) {
             Import-Module BitsTransfer
-            Start-BitsTransfer -Description "Downloading $Name installer" -Source $url -Destination $output
+            Start-BitsTransfer -Description "Downloading $Name installer from $Url" -Source $Url -Destination $Output
         }
         if ($Arg) {
             Start-Process $output -ArgumentList $Arg
