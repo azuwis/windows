@@ -74,3 +74,11 @@ Invoke-Item -Path $sshd
 if (-not (Get-NetFirewallRule -DisplayName "WSL-OpenSSH-Server" -ErrorAction Ignore)) {
     Start-Process powershell -Verb runAs -ArgumentList "New-NetFirewallRule -DisplayName WSL-OpenSSH-Server -Protocol TCP -LocalPort 22 -Action Allow"
 }
+
+# whitelist wsl in windows defender
+Get-AppxPackage -Name TheDebianProject.DebianGNULinux | Select-Object -ExpandProperty PackageFamilyName | % {
+    $path = "$env:LOCALAPPDATA\Packages\$_"
+    if (-not (Get-MpPreference | Select-Object -ExpandProperty ExclusionPath) -contains $path) {
+        Start-Process powershell -Verb runAs -ArgumentList "Set-MpPreference -ExclusionPath $path"
+    }
+}
