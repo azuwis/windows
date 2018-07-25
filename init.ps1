@@ -69,3 +69,8 @@ if (-Not (Test-Path $sshd)) {
     $shortcut.Save()
 }
 Invoke-Item -Path $sshd
+
+# allow sshd firewall inbound
+if (-not (Get-NetFirewallRule -DisplayName "WSL-OpenSSH-Server" -ErrorAction Ignore)) {
+    Start-Process powershell -Verb runAs -ArgumentList "New-NetFirewallRule -DisplayName WSL-OpenSSH-Server -Protocol TCP -LocalPort 22 -Action Allow"
+}
