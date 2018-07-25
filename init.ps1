@@ -16,10 +16,34 @@ function InstallUrl {
     }
 }
 
+function UnpackUrl {
+    param($Url, $File, $UnpackDir, $TestDir)
+    if (-not $File) {
+        $File = $Url.Substring($Url.LastIndexOf("/") + 1)
+        $Output = "$Home\Downloads\$File"
+    }
+    if (-not $TestDir) {
+        $TestDir = $UnpackDir
+    }
+    if (-not (Test-Path "$TestDir")) {
+        if (-not (Test-Path $Output)) {
+            Import-Module BitsTransfer
+            Start-BitsTransfer -Description "Downloading $File from $Url" -Source $Url -Destination $Output
+        }
+        $shell = new-object -com shell.application
+        $shell.NameSpace($UnpackDir).CopyHere($shell.NameSpace($Output).Items())
+    }
+}
+
 # create programs dir
 $programs = "C:\Programs"
 if (-not (Test-Path $programs)) {
     mkdir -Path $programs
+}
+
+# disable bits branchcache https://powershell.org/forums/topic/bits-transfer-with-github/
+if (-not (Get-ItemProperty HKLM:\SOFTWARE\Policies\Microsoft\Windows\BITS | Select-Object -ExpandProperty DisableBranchCache)) {
+    Start-Process powershell -Verb runAs -ArgumentList  "New-ItemProperty HKLM:\SOFTWARE\Policies\Microsoft\Windows\BITS -Name DisableBranchCache -Value 1 -PropertyType DWORD -Force"
 }
 
 # swap capslock ctrl
