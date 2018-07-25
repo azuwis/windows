@@ -1,5 +1,21 @@
 $dir = "$PSScriptRoot"
 
+function InstallUrl {
+    param($Name, $Url, $Arg)
+    $output = "$Home\Downloads\$Name-installer.exe"
+    if (-not (Get-ItemProperty HKLM:\Software\Microsoft\Windows\CurrentVersion\Uninstall\* |  ? { $_.DisplayName -match $Name })) {
+        if (-not (Test-Path $output)) {
+            Import-Module BitsTransfer
+            Start-BitsTransfer -Description "Downloading $Name installer" -Source $url -Destination $output
+        }
+        if ($Arg) {
+            Start-Process $output -ArgumentList $Arg
+        } else {
+            Start-Process $output
+        }
+    }
+}
+
 # swap capslock ctrl
 try {
     Get-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\Keyboard Layout" | Select-Object -ExpandProperty "Scancode Map" -ErrorAction Stop | Out-Null
