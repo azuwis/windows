@@ -73,16 +73,7 @@ if (-not (Get-AppxPackage -Name TheDebianProject.DebianGNULinux)) {
 }
 
 # install qterminal
-$url = "https://github.com/kghost/qterminal/releases/download/0.9.0-wsl.1/QTerminal.X64.zip"
-$zip = "$Home\Downloads\QTerminal.X64.zip"
-if (-not (Test-Path "$programs\QTerminal")) {
-    if (-not (Test-Path $zip)) {
-        Import-Module BitsTransfer
-        Start-BitsTransfer -Source $url -Destination $zip
-    }
-    $shell = new-object -com shell.application
-    $shell.NameSpace($programs).copyhere($shell.NameSpace($zip).Items())
-}
+UnpackUrl -Url "https://github.com/kghost/qterminal/releases/download/0.9.0-wsl.1/QTerminal.X64.zip" -UnpackDir "$programs" -TestDir "$programs\QTerminal"
 
 # auto start sshd
 $sshd = [environment]::getfolderpath("Startup") + "\sshd.lnk"
