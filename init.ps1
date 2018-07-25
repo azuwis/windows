@@ -30,8 +30,15 @@ function UnpackUrl {
             Import-Module BitsTransfer
             Start-BitsTransfer -Description "Downloading $File from $Url" -Source $Url -Destination $Output
         }
-        $shell = new-object -com shell.application
-        $shell.NameSpace($UnpackDir).CopyHere($shell.NameSpace($Output).Items())
+        switch ((Get-Item $Output).Extension) {
+            '.zip' {
+                $shell = new-object -com shell.application
+                $shell.NameSpace($UnpackDir).CopyHere($shell.NameSpace($Output).Items())
+            }
+            '.7z' {
+                 & "C:\Program Files\7-Zip\7z.exe" x "-o$UnpackDir" "$Output"
+            }
+        }
     }
 }
 
