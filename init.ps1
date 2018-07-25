@@ -23,6 +23,9 @@ try {
     regedit /s "$dir\switch-capslock-ctrl.reg"
 }
 
+# install 7z
+InstallUrl -Name 7-Zip -Url "https://www.7-zip.org/a/7z1805-x64.exe" -Arg /S
+
 # install firefox
 InstallUrl -Name Firefox -Url "https://download.mozilla.org/?product=firefox-latest&os=win64&lang=en-US" -Arg /S
 
