@@ -3,7 +3,7 @@ $dir = "$PSScriptRoot"
 function InstallUrl {
     param($Name, $Url, $Arg)
     $output = "$Home\Downloads\$Name-installer.exe"
-    if (-not (Get-ItemProperty HKLM:\Software\Microsoft\Windows\CurrentVersion\Uninstall\* |  ? { $_.DisplayName -match $Name })) {
+    if (-not (Get-ItemProperty HKLM:\Software\Microsoft\Windows\CurrentVersion\Uninstall\*,HKLM:\Software\Wow6432Node\Microsoft\Windows\CurrentVersion\Uninstall\* |  ? { $_.DisplayName -match $Name })) {
         if (-not (Test-Path $output)) {
             Import-Module BitsTransfer
             Start-BitsTransfer -Description "Downloading $Name installer" -Source $url -Destination $output
