@@ -24,7 +24,7 @@ if (-not (Test-Path $programs)) {
 
 # swap capslock ctrl
 try {
-    Get-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\Keyboard Layout" | Select-Object -ExpandProperty "Scancode Map" -ErrorAction Stop | Out-Null
+    Get-ItemProperty "HKLM:\SYSTEM\CurrentControlSet\Control\Keyboard Layout" | Select-Object -ExpandProperty "Scancode Map" -ErrorAction Stop | Out-Null
 } catch {
     regedit /s "$dir\switch-capslock-ctrl.reg"
 }
