@@ -30,15 +30,7 @@ InstallUrl -Name 7-Zip -Url "https://www.7-zip.org/a/7z1805-x64.exe" -Arg /S
 InstallUrl -Name Firefox -Url "https://download.mozilla.org/?product=firefox-latest&os=win64&lang=en-US" -Arg /S
 
 # install weasel
-$url = "https://dl.bintray.com/rime/weasel/weasel-0.11.1.0-installer.exe"
-$output = "$Home\Downloads\weasel-0.11.1.0-installer.exe"
-if (-not (Test-Path "C:\Program Files (x86)\Rime")) {
-    if (-not (Test-Path $output)) {
-        Import-Module BitsTransfer
-        Start-BitsTransfer -Source $url -Destination $output
-    }
-    Start-Process $output -ArgumentList /S
-}
+InstallUrl -Name –°¿«∫¡›î»Î∑® -Url "https://dl.bintray.com/rime/weasel/weasel-0.11.1.0-installer.exe" -Arg /S
 
 # create programs dir
 $programs = "C:\Programs"
