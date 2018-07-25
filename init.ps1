@@ -16,6 +16,12 @@ function InstallUrl {
     }
 }
 
+# create programs dir
+$programs = "C:\Programs"
+if (-not (Test-Path $programs)) {
+    mkdir -Path $programs
+}
+
 # swap capslock ctrl
 try {
     Get-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\Keyboard Layout" | Select-Object -ExpandProperty "Scancode Map" -ErrorAction Stop | Out-Null
@@ -31,12 +37,6 @@ InstallUrl -Name Firefox -Url "https://download.mozilla.org/?product=firefox-lat
 
 # install weasel
 InstallUrl -Name –°¿«∫¡›î»Î∑® -Url "https://dl.bintray.com/rime/weasel/weasel-0.11.1.0-installer.exe" -Arg /S
-
-# create programs dir
-$programs = "C:\Programs"
-if (-not (Test-Path $programs)) {
-    mkdir -Path $programs
-}
 
 # enable wsl
 if (-not (Test-Path "C:\Windows\System32\wsl.exe")) {
