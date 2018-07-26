@@ -82,11 +82,7 @@ if (-not (Test-Path $programs)) {
 Registry -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\BITS -Name DisableBranchCache -Value 1 -Type DWORD
 
 # swap capslock ctrl
-try {
-    Get-ItemProperty "HKLM:\SYSTEM\CurrentControlSet\Control\Keyboard Layout" | Select-Object -ExpandProperty "Scancode Map" -ErrorAction Stop | Out-Null
-} catch {
-    regedit /s "$dir\switch-capslock-ctrl.reg"
-}
+Registry -Path "HKLM:\SYSTEM\CurrentControlSet\Control\Keyboard Layout" -Name "Scancode Map" -Value "0,0,0,0,0,0,0,0,3,0,0,0,29,0,58,0,58,0,29,0,0,0,0,0" -Type Binary
 
 # install 7z
 InstallUrl -DisplayName 7-Zip -Url "https://www.7-zip.org/a/7z1805-x64.exe" -Arg /S
