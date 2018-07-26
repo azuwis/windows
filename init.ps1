@@ -96,6 +96,9 @@ InstallUrl -DisplayName Firefox -Url "https://download.mozilla.org/?product=fire
 
 # install mpv
 UnpackUrl -Url "https://cfhcable.dl.sourceforge.net/project/mpv-player-windows/64bit/mpv-x86_64-20180721-git-08a6827.7z" -UnpackDir "$programs\mpv"
+if (-not (Test-Path "$Env:ProgramData\Microsoft\Windows\Start Menu\Programs\mpv.lnk")) {
+    RunAsAdmin "$programs\mpv\installer\mpv-install.bat"
+}
 
 # install weasel
 InstallUrl -DisplayName –°¿«∫¡›î»Î∑® -Url "https://dl.bintray.com/rime/weasel/weasel-0.11.1.0-installer.exe" -Arg /S
