@@ -79,7 +79,7 @@ if (-not (Test-Path $programs)) {
 }
 
 # disable bits branchcache https://powershell.org/forums/topic/bits-transfer-with-github/
-Registry -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\BITS -Name DisableBranchCache -Value 1 -Type DWORD
+Registry -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\BITS -Name DisableBranchCache -Value 1 -Type DWord
 
 # swap capslock ctrl
 Registry -Path "HKLM:\SYSTEM\CurrentControlSet\Control\Keyboard Layout" -Name "Scancode Map" -Value "0,0,0,0,0,0,0,0,3,0,0,0,29,0,58,0,58,0,29,0,0,0,0,0" -Type Binary
