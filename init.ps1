@@ -99,16 +99,7 @@ if (-not (Get-AppxPackage -Name TheDebianProject.DebianGNULinux)) {
 UnpackUrl -Url "https://github.com/kghost/qterminal/releases/download/0.9.0-wsl.1/QTerminal.X64.zip" -UnpackDir "$programs" -TestDir "$programs\QTerminal"
 
 # auto start sshd
-$sshd = [environment]::getfolderpath("Startup") + "\sshd.lnk"
-if (-Not (Test-Path $sshd)) {
-    $wscript = New-Object -ComObject ("WScript.Shell")
-    $shortcut = $wscript.CreateShortcut($sshd)
-    $shortcut.TargetPath="C:\Windows\System32\wsl.exe"
-    $shortcut.Arguments="sudo service ssh start"
-    $shortcut.WorkingDirectory = "C:\Windows\System32"
-    $shortcut.WindowStyle = 7
-    $shortcut.Save()
-}
+CreateShortcut -Shortcut ([environment]::GetFolderPath("Startup") + "\sshd.lnk") -TargetPath C:\Windows\System32\wsl.exe -Arguments "sudo service ssh start" -WindowStyle 7
 if (-not (Get-Process sshd -ErrorAction Ignore)) {
     Invoke-Item -Path $sshd
 }
