@@ -13,6 +13,13 @@ function CreateShortcut {
     }
 }
 
+function FirewallRule {
+    param($DisplayName, $Action = "Allow", $Protocol = "TCP", $LocalPort)
+    if (-not (Get-NetFirewallRule -DisplayName $DisplayName -ErrorAction Ignore)) {
+        Start-Process powershell -Verb runAs -ArgumentList "New-NetFirewallRule -DisplayName $DisplayName -Action $Action -Protocol $Protocol -LocalPort $LocalPort"
+    }
+}
+
 function InstallUrl {
     param($Name, $Url, $Arg)
     $output = "$Home\Downloads\$Name-installer.exe"
