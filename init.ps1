@@ -1,4 +1,8 @@
-$dir = "$PSScriptRoot"
+# create programs dir
+$programs = "C:\Programs"
+if (-not (Test-Path $programs)) {
+    mkdir -Path $programs
+}
 
 function CreateShortcut {
     param($Shortcut, $TargetPath, $Arguments, $WindowStyle)
@@ -74,12 +78,6 @@ function UnpackUrl {
             }
         }
     }
-}
-
-# create programs dir
-$programs = "C:\Programs"
-if (-not (Test-Path $programs)) {
-    mkdir -Path $programs
 }
 
 # disable bits branchcache https://powershell.org/forums/topic/bits-transfer-with-github/
