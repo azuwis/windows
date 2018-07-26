@@ -5,29 +5,29 @@ if (-not (Test-Path $programs)) {
 }
 
 function CreateShortcut {
-    param($Shortcut, $TargetPath, $Arguments, $WindowStyle)
+    param($Shortcut,$TargetPath,$Arguments,$WindowStyle)
     if (-not (Test-Path $Shortcut)) {
         $ws = New-Object -ComObject ("WScript.Shell")
         $sc = $ws.CreateShortcut($Shortcut)
         $sc.TargetPath = $TargetPath
         $sc.WorkingDirectory = (Get-Item $TargetPath).Directory.FullName
-        if (-not ($Arguments -eq $null)) { $sc.Arguments=$Arguments }
-        if (-not ($WindowStyle -eq $null)) { $sc.WindowStyle=$WindowStyle }
+        if (-not ($Arguments -eq $null)) { $sc.Arguments = $Arguments }
+        if (-not ($WindowStyle -eq $null)) { $sc.WindowStyle = $WindowStyle }
         $sc.Save()
     }
 }
 
 function FirewallRule {
-    param($DisplayName, $Action = "Allow", $Protocol = "TCP", $LocalPort)
+    param($DisplayName,$Action = "Allow",$Protocol = "TCP",$LocalPort)
     if (-not (Get-NetFirewallRule -DisplayName $DisplayName -ErrorAction Ignore)) {
         RunAsAdmin "New-NetFirewallRule -DisplayName `"$DisplayName`" -Action `"$Action`" -Protocol `"$Protocol`" -LocalPort `"$LocalPort`""
     }
 }
 
 function InstallUrl {
-    param($DisplayName, $Url, $Arg)
+    param($DisplayName,$Url,$Arg)
     $output = "$Home\Downloads\$DisplayName-installer.exe"
-    if (-not (Get-ItemProperty HKLM:\Software\Microsoft\Windows\CurrentVersion\Uninstall\*,HKLM:\Software\Wow6432Node\Microsoft\Windows\CurrentVersion\Uninstall\* |  ? { $_.DisplayName -match $DisplayName })) {
+    if (-not (Get-ItemProperty HKLM:\Software\Microsoft\Windows\CurrentVersion\Uninstall\*,HKLM:\Software\Wow6432Node\Microsoft\Windows\CurrentVersion\Uninstall\* | Where-Object { $_.DisplayName -match $DisplayName })) {
         if (-not (Test-Path $output)) {
             Import-Module BitsTransfer
             Start-BitsTransfer -Description "Downloading $DisplayName installer from $Url" -Source $Url -Destination $Output
@@ -41,7 +41,7 @@ function InstallUrl {
 }
 
 function Registry {
-    param($Path, $Name, $Value, $Type)
+    param($Path,$Name,$Value,$Type)
     if (-not (Get-ItemProperty $Path | Select-Object -ExpandProperty $Name) -eq $Value) {
         RunAsAdmin "Set-ItemProperty `"$Path`" -Name `"$Name`" -Value $Value -Type `"$Type`" -Force"
     }
@@ -55,7 +55,7 @@ function RunAsAdmin {
 }
 
 function UnpackUrl {
-    param($Url, $File, $UnpackDir, $TestDir)
+    param($Url,$File,$UnpackDir,$TestDir)
     if (-not $File) {
         $File = $Url.Substring($Url.LastIndexOf("/") + 1)
         $Output = "$Home\Downloads\$File"
@@ -70,11 +70,11 @@ function UnpackUrl {
         }
         switch ((Get-Item $Output).Extension) {
             '.zip' {
-                $shell = new-object -com shell.application
-                $shell.NameSpace($UnpackDir).CopyHere($shell.NameSpace($Output).Items())
+                $shell = New-Object -com shell.application
+                $shell.Namespace($UnpackDir).CopyHere($shell.Namespace($Output).Items())
             }
             '.7z' {
-                 & "C:\Program Files\7-Zip\7z.exe" x "-o$UnpackDir" "$Output" | Out-Null
+                & "C:\Program Files\7-Zip\7z.exe" x "-o$UnpackDir" "$Output" | Out-Null
             }
         }
     }
@@ -125,7 +125,7 @@ if (-not (Get-Process sshd -ErrorAction Ignore)) {
 FirewallRule -DisplayName "WSL OpenSSH Server" -LocalPort 22
 
 # whitelist wsl in windows defender
-Get-AppxPackage -Name TheDebianProject.DebianGNULinux | Select-Object -ExpandProperty PackageFamilyName | % {
+Get-AppxPackage -Name TheDebianProject.DebianGNULinux | Select-Object -ExpandProperty PackageFamilyName | ForEach-Object {
     $path = "$env:LOCALAPPDATA\Packages\$_"
     if (-not (Get-MpPreference | Select-Object -ExpandProperty ExclusionPath) -contains $path) {
         RunAsAdmin "Set-MpPreference -ExclusionPath `"$path`""
