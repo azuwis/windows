@@ -102,7 +102,7 @@ InstallUrl -DisplayName –°¿«∫¡›î»Î∑® -Url "https://dl.bintray.com/rime/weasel/we
 
 # enable wsl
 if (-not (Test-Path "C:\Windows\System32\wsl.exe")) {
-    Start-Process powershell -Verb runAs -ArgumentList "Enable-WindowsOptionalFeature -Online -FeatureName Microsoft-Windows-Subsystem-Linux"
+    RunAsAdmin "Enable-WindowsOptionalFeature -Online -FeatureName Microsoft-Windows-Subsystem-Linux"
 }
 
 # install debian
