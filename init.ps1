@@ -46,6 +46,13 @@ function Registry {
     }
 }
 
+function RunAsAdmin {
+    param($Command)
+    $bytes = [System.Text.Encoding]::Unicode.GetBytes($Command)
+    $encodedCommand = [Convert]::ToBase64String($bytes)
+    Start-Process powershell -Verb runAs -ArgumentList "-EncodedCommand $encodedCommand"
+}
+
 function UnpackUrl {
     param($Url, $File, $UnpackDir, $TestDir)
     if (-not $File) {
