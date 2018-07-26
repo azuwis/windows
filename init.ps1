@@ -39,10 +39,7 @@ function InstallUrl {
 function Registry {
     param($Path, $Name, $Value, $Type)
     if (-not (Get-ItemProperty $Path | Select-Object -ExpandProperty $Name) -eq $Value) {
-        $command = "Set-ItemProperty `"$Path`" -Name `"$Name`" -Value $Value -Type `"$Type`" -Force"
-        $bytes = [System.Text.Encoding]::Unicode.GetBytes($command)
-        $encodedCommand = [Convert]::ToBase64String($bytes)
-        Start-Process powershell -Verb runAs -ArgumentList "-EncodedCommand $encodedCommand"
+        RunAsAdmin "Set-ItemProperty `"$Path`" -Name `"$Name`" -Value $Value -Type `"$Type`" -Force"
     }
 }
 
