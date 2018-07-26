@@ -36,7 +36,7 @@ function UnpackUrl {
                 $shell.NameSpace($UnpackDir).CopyHere($shell.NameSpace($Output).Items())
             }
             '.7z' {
-                 & "C:\Program Files\7-Zip\7z.exe" x "-o$UnpackDir" "$Output"
+                 & "C:\Program Files\7-Zip\7z.exe" x "-o$UnpackDir" "$Output" | Out-Null
             }
         }
     }
