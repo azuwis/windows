@@ -127,6 +127,6 @@ FirewallRule -DisplayName "WSL OpenSSH Server" -LocalPort 22
 Get-AppxPackage -Name TheDebianProject.DebianGNULinux | Select-Object -ExpandProperty PackageFamilyName | % {
     $path = "$env:LOCALAPPDATA\Packages\$_"
     if (-not (Get-MpPreference | Select-Object -ExpandProperty ExclusionPath) -contains $path) {
-        Start-Process powershell -Verb runAs -ArgumentList "Set-MpPreference -ExclusionPath $path"
+        RunAsAdmin "Set-MpPreference -ExclusionPath `"$path`""
     }
 }
