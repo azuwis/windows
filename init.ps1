@@ -112,9 +112,7 @@ if (-not (Get-Process sshd -ErrorAction Ignore)) {
 }
 
 # allow sshd firewall inbound
-if (-not (Get-NetFirewallRule -DisplayName "WSL-OpenSSH-Server" -ErrorAction Ignore)) {
-    Start-Process powershell -Verb runAs -ArgumentList "New-NetFirewallRule -DisplayName WSL-OpenSSH-Server -Protocol TCP -LocalPort 22 -Action Allow"
-}
+FirewallRule -DisplayName WSL-OpenSSH-Server -LocalPort 22
 
 # whitelist wsl in windows defender
 Get-AppxPackage -Name TheDebianProject.DebianGNULinux | Select-Object -ExpandProperty PackageFamilyName | % {
