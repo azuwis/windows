@@ -36,6 +36,13 @@ function InstallUrl {
     }
 }
 
+function Registry {
+    param($Path, $Name, $Value, $Type)
+    if (-not (Get-ItemProperty $Path | Select-Object -ExpandProperty $Name) -eq $Value) {
+        Start-Process powershell -Verb runAs -ArgumentList "Set-ItemProperty $Path -Name $Name -Value $Value -Type $Type -Force"
+    }
+}
+
 function UnpackUrl {
     param($Url, $File, $UnpackDir, $TestDir)
     if (-not $File) {
