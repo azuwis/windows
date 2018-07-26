@@ -21,12 +21,12 @@ function FirewallRule {
 }
 
 function InstallUrl {
-    param($Name, $Url, $Arg)
-    $output = "$Home\Downloads\$Name-installer.exe"
-    if (-not (Get-ItemProperty HKLM:\Software\Microsoft\Windows\CurrentVersion\Uninstall\*,HKLM:\Software\Wow6432Node\Microsoft\Windows\CurrentVersion\Uninstall\* |  ? { $_.DisplayName -match $Name })) {
+    param($DisplayName, $Url, $Arg)
+    $output = "$Home\Downloads\$DisplayName-installer.exe"
+    if (-not (Get-ItemProperty HKLM:\Software\Microsoft\Windows\CurrentVersion\Uninstall\*,HKLM:\Software\Wow6432Node\Microsoft\Windows\CurrentVersion\Uninstall\* |  ? { $_.DisplayName -match $DisplayName })) {
         if (-not (Test-Path $output)) {
             Import-Module BitsTransfer
-            Start-BitsTransfer -Description "Downloading $Name installer from $Url" -Source $Url -Destination $Output
+            Start-BitsTransfer -Description "Downloading $DisplayName installer from $Url" -Source $Url -Destination $Output
         }
         if ($Arg) {
             Start-Process $output -ArgumentList $Arg
@@ -81,16 +81,16 @@ try {
 }
 
 # install 7z
-InstallUrl -Name 7-Zip -Url "https://www.7-zip.org/a/7z1805-x64.exe" -Arg /S
+InstallUrl -DisplayName 7-Zip -Url "https://www.7-zip.org/a/7z1805-x64.exe" -Arg /S
 
 # install firefox
-InstallUrl -Name Firefox -Url "https://download.mozilla.org/?product=firefox-latest&os=win64&lang=en-US" -Arg /S
+InstallUrl -DisplayName Firefox -Url "https://download.mozilla.org/?product=firefox-latest&os=win64&lang=en-US" -Arg /S
 
 # install mpv
 UnpackUrl -Url "https://cfhcable.dl.sourceforge.net/project/mpv-player-windows/64bit/mpv-x86_64-20180721-git-08a6827.7z" -UnpackDir "$programs\mpv"
 
 # install weasel
-InstallUrl -Name 小狼毫輸入法 -Url "https://dl.bintray.com/rime/weasel/weasel-0.11.1.0-installer.exe" -Arg /S
+InstallUrl -DisplayName 小狼毫輸入法 -Url "https://dl.bintray.com/rime/weasel/weasel-0.11.1.0-installer.exe" -Arg /S
 
 # enable wsl
 if (-not (Test-Path "C:\Windows\System32\wsl.exe")) {
