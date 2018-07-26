@@ -16,7 +16,7 @@ function CreateShortcut {
 function FirewallRule {
     param($DisplayName, $Action = "Allow", $Protocol = "TCP", $LocalPort)
     if (-not (Get-NetFirewallRule -DisplayName $DisplayName -ErrorAction Ignore)) {
-        Start-Process powershell -Verb runAs -ArgumentList "New-NetFirewallRule -DisplayName $DisplayName -Action $Action -Protocol $Protocol -LocalPort $LocalPort"
+        RunAsAdmin "New-NetFirewallRule -DisplayName `"$DisplayName`" -Action `"$Action`" -Protocol `"$Protocol`" -LocalPort `"$LocalPort`""
     }
 }
 
@@ -121,7 +121,7 @@ if (-not (Get-Process sshd -ErrorAction Ignore)) {
 }
 
 # allow sshd firewall inbound
-FirewallRule -DisplayName WSL-OpenSSH-Server -LocalPort 22
+FirewallRule -DisplayName "WSL OpenSSH Server" -LocalPort 22
 
 # whitelist wsl in windows defender
 Get-AppxPackage -Name TheDebianProject.DebianGNULinux | Select-Object -ExpandProperty PackageFamilyName | % {
