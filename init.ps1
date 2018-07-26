@@ -96,7 +96,9 @@ if (-Not (Test-Path $sshd)) {
     $shortcut.WindowStyle = 7
     $shortcut.Save()
 }
-Invoke-Item -Path $sshd
+if (-not (Get-Process sshd -ErrorAction Ignore)) {
+    Invoke-Item -Path $sshd
+}
 
 # allow sshd firewall inbound
 if (-not (Get-NetFirewallRule -DisplayName "WSL-OpenSSH-Server" -ErrorAction Ignore)) {
