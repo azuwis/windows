@@ -104,6 +104,7 @@ if (-not (Get-AppxPackage -Name TheDebianProject.DebianGNULinux)) {
 
 # install qterminal
 UnpackUrl -Url "https://github.com/kghost/qterminal/releases/download/0.9.0-wsl.1/QTerminal.X64.zip" -UnpackDir "$programs" -TestDir "$programs\QTerminal"
+CreateShortcut -Shortcut ([Environment]::GetFolderPath("Desktop") + "\QTerminal.lnk") -TargetPath "$programs\QTerminal\QTerminal.exe"
 
 # auto start sshd
 CreateShortcut -Shortcut ([environment]::GetFolderPath("Startup") + "\sshd.lnk") -TargetPath C:\Windows\System32\wsl.exe -Arguments "sudo service ssh start" -WindowStyle 7
