@@ -76,9 +76,7 @@ if (-not (Test-Path $programs)) {
 }
 
 # disable bits branchcache https://powershell.org/forums/topic/bits-transfer-with-github/
-if (-not (Get-ItemProperty HKLM:\SOFTWARE\Policies\Microsoft\Windows\BITS | Select-Object -ExpandProperty DisableBranchCache)) {
-    Start-Process powershell -Verb runAs -ArgumentList  "New-ItemProperty HKLM:\SOFTWARE\Policies\Microsoft\Windows\BITS -Name DisableBranchCache -Value 1 -PropertyType DWORD -Force"
-}
+Registry -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\BITS -Name DisableBranchCache -Value 1 -Type DWORD
 
 # swap capslock ctrl
 try {
