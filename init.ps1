@@ -1,5 +1,18 @@
 $dir = "$PSScriptRoot"
 
+function CreateShortcut {
+    param($Shortcut, $TargetPath, $Arguments, $WindowStyle)
+    if (-not (Test-Path $Shortcut)) {
+        $ws = New-Object -ComObject ("WScript.Shell")
+        $sc = $ws.CreateShortcut($Shortcut)
+        $sc.TargetPath = $TargetPath
+        $sc.WorkingDirectory = (Get-Item $TargetPath).Directory.FullName
+        if (-not ($Arguments -eq $null)) { $sc.Arguments=$Arguments }
+        if (-not ($WindowStyle -eq $null)) { $sc.WindowStyle=$WindowStyle }
+        $sc.Save()
+    }
+}
+
 function InstallUrl {
     param($Name, $Url, $Arg)
     $output = "$Home\Downloads\$Name-installer.exe"
