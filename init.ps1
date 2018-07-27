@@ -17,6 +17,20 @@ function CreateShortcut {
     }
 }
 
+function DefenderExcludeAppx {
+    param($Name)
+    Get-AppxPackage -Name $Name | Select-Object -ExpandProperty PackageFamilyName | ForEach-Object {
+        DefenderExcludePath -Path "$Env:LOCALAPPDATA\Packages\$_"
+    }
+}
+
+function DefenderExcludePath {
+    param($Path)
+    if (-not (Get-MpPreference | Select-Object -ExpandProperty ExclusionPath) -contains $Path) {
+        RunAsAdmin "Set-MpPreference -ExclusionPath `"$Path`""
+    }
+}
+
 function FirewallRule {
     param($DisplayName,$Action = "Allow",$Protocol = "TCP",$LocalPort)
     if (-not (Get-NetFirewallRule -DisplayName $DisplayName -ErrorAction Ignore)) {
@@ -125,9 +139,4 @@ if (-not (Get-Process sshd -ErrorAction Ignore)) {
 FirewallRule -DisplayName "WSL OpenSSH Server" -LocalPort 22
 
 # whitelist wsl in windows defender
-Get-AppxPackage -Name TheDebianProject.DebianGNULinux | Select-Object -ExpandProperty PackageFamilyName | ForEach-Object {
-    $path = "$env:LOCALAPPDATA\Packages\$_"
-    if (-not (Get-MpPreference | Select-Object -ExpandProperty ExclusionPath) -contains $path) {
-        RunAsAdmin "Set-MpPreference -ExclusionPath `"$path`""
-    }
-}
+DefenderExcludeAppx -Name TheDebianProject.DebianGNULinux
