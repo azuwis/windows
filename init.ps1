@@ -58,10 +58,11 @@ function InstallUrl {
 
 function Registry {
     param($Path,$Name,$Value,$Type)
+    $Json = (ConvertTo-Json $Value)
     if (-not (Test-Path $Path)) {
-        RunAsAdmin "New-Item `"$Path`" -Force | New-ItemProperty -Name `"$Name`" -Value $Value -PropertyType `"$Type`" -Force; read-host"
-    } elseif (-not ((Get-ItemProperty $Path | Select-Object -ExpandProperty $Name -ErrorAction Ignore) -eq $Value)) {
-        RunAsAdmin "Set-ItemProperty `"$Path`" -Name `"$Name`" -Value $Value -Type `"$Type`" -Force"
+        RunAsAdmin "New-Item `"$Path`" -Force | New-ItemProperty -Name `"$Name`" -Value (ConvertFrom-Json `"$Json`") -PropertyType $Type -Force"
+    } elseif (-not ((ConvertTo-Json (Get-ItemProperty $Path | Select-Object -ExpandProperty $Name -ErrorAction Ignore)) -eq $Json)) {
+        RunAsAdmin "Set-ItemProperty `"$Path`" -Name `"$Name`" -Value (ConvertFrom-Json `"$Json`") -Type $Type -Force"
     }
 }
 
