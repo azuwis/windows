@@ -58,7 +58,9 @@ function InstallUrl {
 
 function Registry {
     param($Path,$Name,$Value,$Type)
-    if (-not (Get-ItemProperty $Path | Select-Object -ExpandProperty $Name) -eq $Value) {
+    if (-not (Test-Path $Path)) {
+        RunAsAdmin "New-Item `"$Path`" -Force | New-ItemProperty -Name `"$Name`" -Value $Value -PropertyType `"$Type`" -Force; read-host"
+    } elseif (-not (Get-ItemProperty $Path | Select-Object -ExpandProperty $Name) -eq $Value) {
         RunAsAdmin "Set-ItemProperty `"$Path`" -Name `"$Name`" -Value $Value -Type `"$Type`" -Force"
     }
 }
@@ -101,6 +103,10 @@ Registry -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\BITS -Name DisableBranc
 
 # swap capslock ctrl
 Registry -Path "HKLM:\SYSTEM\CurrentControlSet\Control\Keyboard Layout" -Name "Scancode Map" -Value "0,0,0,0,0,0,0,0,3,0,0,0,29,0,58,0,58,0,29,0,0,0,0,0" -Type Binary
+
+# disable suggested apps
+Registry -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\CloudContent -Name DisableWindowsConsumerFeatures -Value 1 -Type DWord
+Registry -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\ContentDeliveryManager -Name SystemPaneSuggestionsEnabled -Value 0 -Type DWord
 
 # install 7z
 InstallUrl -DisplayName 7-Zip -Url "https://www.7-zip.org/a/7z1805-x64.exe" -Arg /S
