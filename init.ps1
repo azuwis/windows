@@ -1,5 +1,7 @@
 # create programs dir
-$Programs = "C:\Programs"
+$Desktop = [Environment]::GetFolderPath("Desktop")
+$Startup = [Environment]::GetFolderPath("Startup")
+$Programs = "$Env:HOMEDRIVE:\Programs"
 if (-not (Test-Path $Programs)) {
     mkdir -Path $Programs
 }
@@ -127,10 +129,10 @@ if (-not (Get-AppxPackage -Name TheDebianProject.DebianGNULinux)) {
 
 # install qterminal
 UnpackUrl -Url "https://github.com/kghost/qterminal/releases/download/0.9.0-wsl.1/QTerminal.X64.zip" -UnpackDir "$Programs" -TestDir "$Programs\QTerminal"
-CreateShortcut -Shortcut ([Environment]::GetFolderPath("Desktop") + "\QTerminal.lnk") -TargetPath "$Programs\QTerminal\QTerminal.exe"
+CreateShortcut -Shortcut "$Desktop\QTerminal.lnk" -TargetPath "$Programs\QTerminal\QTerminal.exe"
 
 # auto start sshd
-CreateShortcut -Shortcut ([Environment]::GetFolderPath("Startup") + "\sshd.lnk") -TargetPath C:\Windows\System32\wsl.exe -Arguments "sudo service ssh start" -WindowStyle 7
+CreateShortcut -Shortcut "$Startup\sshd.lnk" -TargetPath C:\Windows\System32\wsl.exe -Arguments "sudo service ssh start" -WindowStyle 7
 if (-not (Get-Process sshd -ErrorAction Ignore)) {
     Invoke-Item -Path $sshd
 }
