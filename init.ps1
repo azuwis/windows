@@ -1,7 +1,7 @@
 # create programs dir
-$programs = "C:\Programs"
-if (-not (Test-Path $programs)) {
-    mkdir -Path $programs
+$Programs = "C:\Programs"
+if (-not (Test-Path $Programs)) {
+    mkdir -Path $Programs
 }
 
 function CreateShortcut {
@@ -107,9 +107,9 @@ InstallUrl -DisplayName 7-Zip -Url "https://www.7-zip.org/a/7z1805-x64.exe" -Arg
 InstallUrl -DisplayName Firefox -Url "https://download.mozilla.org/?product=firefox-latest&os=win64&lang=en-US" -Arg /S
 
 # install mpv
-UnpackUrl -Url "https://cfhcable.dl.sourceforge.net/project/mpv-player-windows/64bit/mpv-x86_64-20180721-git-08a6827.7z" -UnpackDir "$programs\mpv"
+UnpackUrl -Url "https://cfhcable.dl.sourceforge.net/project/mpv-player-windows/64bit/mpv-x86_64-20180721-git-08a6827.7z" -UnpackDir "$Programs\mpv"
 if (-not (Test-Path "$Env:ProgramData\Microsoft\Windows\Start Menu\Programs\mpv.lnk")) {
-    RunAsAdmin "$programs\mpv\installer\mpv-install.bat"
+    RunAsAdmin "$Programs\mpv\installer\mpv-install.bat"
 }
 
 # install weasel
@@ -126,11 +126,11 @@ if (-not (Get-AppxPackage -Name TheDebianProject.DebianGNULinux)) {
 }
 
 # install qterminal
-UnpackUrl -Url "https://github.com/kghost/qterminal/releases/download/0.9.0-wsl.1/QTerminal.X64.zip" -UnpackDir "$programs" -TestDir "$programs\QTerminal"
-CreateShortcut -Shortcut ([Environment]::GetFolderPath("Desktop") + "\QTerminal.lnk") -TargetPath "$programs\QTerminal\QTerminal.exe"
+UnpackUrl -Url "https://github.com/kghost/qterminal/releases/download/0.9.0-wsl.1/QTerminal.X64.zip" -UnpackDir "$Programs" -TestDir "$Programs\QTerminal"
+CreateShortcut -Shortcut ([Environment]::GetFolderPath("Desktop") + "\QTerminal.lnk") -TargetPath "$Programs\QTerminal\QTerminal.exe"
 
 # auto start sshd
-CreateShortcut -Shortcut ([environment]::GetFolderPath("Startup") + "\sshd.lnk") -TargetPath C:\Windows\System32\wsl.exe -Arguments "sudo service ssh start" -WindowStyle 7
+CreateShortcut -Shortcut ([Environment]::GetFolderPath("Startup") + "\sshd.lnk") -TargetPath C:\Windows\System32\wsl.exe -Arguments "sudo service ssh start" -WindowStyle 7
 if (-not (Get-Process sshd -ErrorAction Ignore)) {
     Invoke-Item -Path $sshd
 }
