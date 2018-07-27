@@ -103,7 +103,7 @@ function UnpackUrl {
 Registry -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\BITS -Name DisableBranchCache -Value 1 -Type DWord
 
 # swap capslock ctrl
-Registry -Path "HKLM:\SYSTEM\CurrentControlSet\Control\Keyboard Layout" -Name "Scancode Map" -Value "0,0,0,0,0,0,0,0,3,0,0,0,29,0,58,0,58,0,29,0,0,0,0,0" -Type Binary
+Registry -Path "HKLM:\SYSTEM\CurrentControlSet\Control\Keyboard Layout" -Name "Scancode Map" -Value 0,0,0,0,0,0,0,0,3,0,0,0,29,0,58,0,58,0,29,0,0,0,0,0 -Type Binary
 
 # disable suggested apps
 Registry -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\CloudContent -Name DisableWindowsConsumerFeatures -Value 1 -Type DWord
