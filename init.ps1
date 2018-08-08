@@ -117,6 +117,9 @@ Registry -Path "HKLM:\SYSTEM\CurrentControlSet\Control\Keyboard Layout" -Name "S
 # remove shortcut arrow
 Registry -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Shell Icons" -Name 29 -Value "%windir%\System32\shell32.dll,-50" -Type String
 
+# enable remote app
+Registry -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows NT\Terminal Services" -Name fAllowUnlistedRemotePrograms -Value 1 -Type DWord
+
 # disable suggested apps
 Registry -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\CloudContent -Name DisableWindowsConsumerFeatures -Value 1 -Type DWord
 Registry -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\ContentDeliveryManager -Name SystemPaneSuggestionsEnabled -Value 0 -Type DWord
