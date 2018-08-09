@@ -3,7 +3,7 @@ $Desktop = [Environment]::GetFolderPath("Desktop")
 $Startup = [Environment]::GetFolderPath("Startup")
 $Programs = "$Env:HOMEDRIVE:\Programs"
 if (-not (Test-Path $Programs)) {
-    mkdir -Path $Programs
+    mkdir -Path $Programs | Out-Null
 }
 
 function CreateShortcut {
