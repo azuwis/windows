@@ -156,7 +156,7 @@ CreateShortcut -Shortcut "$Desktop\QTerminal.lnk" -TargetPath "$Programs\QTermin
 # auto start sshd
 CreateShortcut -Shortcut "$Startup\sshd.lnk" -TargetPath C:\Windows\System32\wsl.exe -Arguments "sudo service ssh start" -WindowStyle 7
 if (-not (Get-Process sshd -ErrorAction Ignore)) {
-    Invoke-Item -Path $sshd
+    Invoke-Item -Path "$Startup\sshd.lnk"
 }
 
 # allow sshd firewall inbound
