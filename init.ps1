@@ -135,6 +135,30 @@ UnpackUrl -Url "https://cfhcable.dl.sourceforge.net/project/mpv-player-windows/6
 if (-not (Test-Path "$Env:ProgramData\Microsoft\Windows\Start Menu\Programs\mpv.lnk")) {
     RunAsAdmin "$Programs\mpv\installer\mpv-install.bat"
 }
+if (-not (Test-Path "$Programs\mpv\mpv\lua-settings")) {
+    mkdir -Path "$Programs\mpv\mpv\lua-settings" | Out-Null
+}
+Set-Content -Path "$Programs\mpv\mpv\mpv.conf" -Force -Value @'
+[default]
+hwdec=auto
+keep-open-pause=no
+keep-open=yes
+sub-auto=fuzzy
+sub-codepage=gbk
+user-agent="Mozilla/5.0 (iPad; CPU OS 8_1_3 like Mac OS X) AppleWebKit/600.1.4 (KHTML, like Gecko) Version/8.0 Mobile/12B466 Safari/600.1.4"
+'@
+Set-Content -Path "$Programs\mpv\mpv\input.conf" -Force -Value @'
+Y add sub-scale +0.1                # increase subtitle font size
+G add sub-scale -0.1                # decrease subtitle font size
+y sub_step -1                       # immediately display next subtitle
+g sub_step +1                       # previous
+R cycle_values window-scale 0.5 2 1 # switch between 1/2, 2x, unresized window size
+'@
+Set-Content -Path "$Programs\mpv\mpv\lua-settings\osc.conf" -Force -Value @'
+seekbarstyle=knob
+deadzonesize=1
+minmousemove=1
+'@
 
 # install weasel
 InstallUrl -DisplayName –°¿«∫¡›î»Î∑® -Url "https://dl.bintray.com/rime/weasel/weasel-0.11.1.0-installer.exe" -Arg /S
