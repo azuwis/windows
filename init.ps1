@@ -144,9 +144,7 @@ UnpackUrl -Url "https://cfhcable.dl.sourceforge.net/project/mpv-player-windows/6
 if (-not (Test-Path "$Env:ProgramData\Microsoft\Windows\Start Menu\Programs\mpv.lnk")) {
     RunAsAdmin "$Programs\mpv\installer\mpv-install.bat"
 }
-if (-not (Test-Path "$Programs\mpv\mpv\lua-settings")) {
-    mkdir -Path "$Programs\mpv\mpv\lua-settings" | Out-Null
-}
+MakeDir -Dir "$Programs\mpv\mpv\script-opts"
 Set-Content -Path "$Programs\mpv\mpv\mpv.conf" -Force -Value @'
 [default]
 hwdec=auto
@@ -161,9 +159,9 @@ Y add sub-scale +0.1                # increase subtitle font size
 G add sub-scale -0.1                # decrease subtitle font size
 y sub_step -1                       # immediately display next subtitle
 g sub_step +1                       # previous
-R cycle_values window-scale 0.5 2 1 # switch between 1/2, 2x, unresized window size
+R cycle_values window-scale 2 0.5 1 # switch between 2x, 1/2, unresized window size
 '@
-Set-Content -Path "$Programs\mpv\mpv\lua-settings\osc.conf" -Force -Value @'
+Set-Content -Path "$Programs\mpv\mpv\script-opts\osc.conf" -Force -Value @'
 seekbarstyle=knob
 deadzonesize=1
 minmousemove=1
