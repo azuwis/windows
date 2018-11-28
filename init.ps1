@@ -46,13 +46,17 @@ function FirewallRule {
     }
 }
 
+# Get-ItemProperty HKLM:\Software\Microsoft\Windows\CurrentVersion\Uninstall\*,HKLM:\Software\Wow6432Node\Microsoft\Windows\CurrentVersion\Uninstall\* | Select-Object DisplayName
 function InstallUrl {
-    param($DisplayName,$Url,$Arg)
-    $output = "$Home\Downloads\$DisplayName-installer.exe"
+    param($DisplayName,$Url,$File,$Arg)
+    if ($File -eq $null) {
+        $File = $Url.Substring($Url.LastIndexOf("/") + 1)
+    }
+    $output = "$Home\Downloads\$File"
     if (-not (Get-ItemProperty HKLM:\Software\Microsoft\Windows\CurrentVersion\Uninstall\*,HKLM:\Software\Wow6432Node\Microsoft\Windows\CurrentVersion\Uninstall\* | Where-Object { $_.DisplayName -match $DisplayName })) {
         if (-not (Test-Path $output)) {
             Import-Module BitsTransfer
-            Start-BitsTransfer -Description "Downloading $DisplayName installer from $Url" -Source $Url -Destination $Output
+            Start-BitsTransfer -Description "Downloading $DisplayName installer from $Url" -Source $Url -Destination $output
         }
         if ($Arg) {
             Start-Process $output -ArgumentList $Arg
@@ -137,7 +141,7 @@ InstallUrl -DisplayName "Microsoft Visual C\+\+ 2010  x86 Redistributable" -Url 
 InstallUrl -DisplayName 7-Zip -Url "https://www.7-zip.org/a/7z1805-x64.exe" -Arg /S
 
 # install firefox
-InstallUrl -DisplayName Firefox -Url "https://download.mozilla.org/?product=firefox-latest&os=win64&lang=en-US" -Arg /S
+InstallUrl -DisplayName Firefox -Url "https://download.mozilla.org/?product=firefox-latest&os=win64&lang=en-US" -File firefox-installer.exe -Arg /S
 
 # install mpv
 UnpackUrl -Url "https://cfhcable.dl.sourceforge.net/project/mpv-player-windows/64bit/mpv-x86_64-20180721-git-08a6827.7z" -UnpackDir "$Programs\mpv"
