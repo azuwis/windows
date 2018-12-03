@@ -202,3 +202,6 @@ FirewallRule -DisplayName "WSL OpenSSH Server" -LocalPort 22
 
 # whitelist wsl in windows defender
 DefenderExcludeAppx -Name TheDebianProject.DebianGNULinux
+
+# Install VcXsrv
+InstallUrl -DisplayName VcXsrv -Url https://cfhcable.dl.sourceforge.net/project/vcxsrv/vcxsrv/1.20.1.4/vcxsrv-64.1.20.1.4.installer.exe -Arg /S
