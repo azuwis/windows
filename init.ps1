@@ -127,6 +127,9 @@ Registry -Path "HKLM:\SYSTEM\CurrentControlSet\Control\Keyboard Layout" -Name "S
 # remove shortcut arrow
 Registry -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Shell Icons" -Name 29 -Value "%windir%\System32\shell32.dll,-50" -Type String
 
+# Change menu font of some apps, default to Simsun for CN lang
+Registry -Path "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\GRE_Initialize" -Name "GUIFont.Facename" -Value "Segoe UI, Microsoft Yahei UI" -Type String
+
 # enable remote app
 Registry -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows NT\Terminal Services" -Name fAllowUnlistedRemotePrograms -Value 1 -Type DWord
 
