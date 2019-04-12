@@ -154,7 +154,7 @@ InstallUrl -DisplayName 7-Zip -Url "https://www.7-zip.org/a/7z1805-x64.exe" -Arg
 InstallUrl -DisplayName Firefox -Url "https://download.mozilla.org/?product=firefox-latest&os=win64&lang=en-US" -File firefox-installer.exe -Arg /S
 
 # install mpv
-UnpackUrl -Url "https://cfhcable.dl.sourceforge.net/project/mpv-player-windows/64bit/mpv-x86_64-20180721-git-08a6827.7z" -UnpackDir "$Programs\mpv"
+UnpackUrl -Url "https://cfhcable.dl.sourceforge.net/project/mpv-player-windows/64bit/mpv-x86_64-20190407-git-e9fae41.7z" -UnpackDir "$Programs\mpv"
 if (-not (Test-Path "$Env:ProgramData\Microsoft\Windows\Start Menu\Programs\mpv.lnk")) {
     RunAsAdmin "$Programs\mpv\installer\mpv-install.bat"
 }
@@ -182,7 +182,7 @@ minmousemove=1
 '@
 
 # install weasel
-InstallUrl -DisplayName 小狼毫輸入法 -Url "https://dl.bintray.com/rime/weasel/weasel-0.11.1.0-installer.exe" -Arg /S
+InstallUrl -DisplayName 小狼毫輸入法 -Url "https://dl.bintray.com/rime/weasel/weasel-0.13.0.0-installer.exe" -Arg /S
 
 # enable wsl
 if (-not (Test-Path "C:\Windows\System32\wsl.exe")) {
