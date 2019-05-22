@@ -128,7 +128,7 @@ Registry -Path "HKLM:\SYSTEM\CurrentControlSet\Control\Keyboard Layout" -Name "S
 Registry -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Shell Icons" -Name 29 -Value "%windir%\System32\shell32.dll,-50" -Type String
 Start-Process ie4uinit.exe -ArgumentList -show
 
-# Change menu font of some apps, default to Simsun for CN lang
+# Change UI font of some apps, default is Simsun for CN lang
 Registry -Path "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\GRE_Initialize" -Name "GUIFont.Facename" -Value "Segoe UI, Microsoft Yahei UI" -Type String
 
 # enable remote app
@@ -210,5 +210,9 @@ FirewallRule -DisplayName "WSL OpenSSH Server" -LocalPort 22
 # whitelist wsl in windows defender
 DefenderExcludeAppx -Name TheDebianProject.DebianGNULinux
 
-# Install VcXsrv
+# install VcXsrv
 InstallUrl -DisplayName VcXsrv -Url https://cfhcable.dl.sourceforge.net/project/vcxsrv/vcxsrv/1.20.1.4/vcxsrv-64.1.20.1.4.installer.exe -Arg /S
+
+# misc notes
+# disable vpn default route
+# Set-VpnConnection -Name "<vpnname>" -SplitTunneling $True
