@@ -138,8 +138,8 @@ Registry -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows NT\Terminal Services" 
 Registry -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\CloudContent -Name DisableWindowsConsumerFeatures -Value 1 -Type DWord
 Registry -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\ContentDeliveryManager -Name SystemPaneSuggestionsEnabled -Value 0 -Type DWord
 
-# install vcredist 2010 for youtube-dl
-InstallUrl -DisplayName "Microsoft Visual C\+\+ 2010  x86 Redistributable" -Url "https://download.microsoft.com/download/5/B/C/5BC5DBB3-652D-4DCE-B14A-475AB85EEF6E/vcredist_x86.exe" -Arg "/q /norestart"
+# install vcredist 2010 x86 for youtube-dl
+InstallUrl -DisplayName "Microsoft Visual C\+\+ 2010  x86 Redistributable" -Url "https://download.microsoft.com/download/5/B/C/5BC5DBB3-652D-4DCE-B14A-475AB85EEF6E/vcredist_x86.exe" -File vcredist-2010-x86.exe -Arg "/q /norestart"
 
 # install 7z
 InstallUrl -DisplayName 7-Zip -Url "https://www.7-zip.org/a/7z1805-x64.exe" -Arg /S
