@@ -141,12 +141,6 @@ Registry -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\ContentDeliveryMa
 # install vcredist 2010 for youtube-dl
 InstallUrl -DisplayName "Microsoft Visual C\+\+ 2010  x86 Redistributable" -Url "https://download.microsoft.com/download/5/B/C/5BC5DBB3-652D-4DCE-B14A-475AB85EEF6E/vcredist_x86.exe" -Arg "/q /norestart"
 
-# install vcredist 2013 for vamp-aubio-plugins
-InstallUrl -DisplayName "Microsoft Visual C\+\+ 2013 Redistributable \(x86\)" -Url "https://download.microsoft.com/download/2/E/6/2E61CFA4-993B-4DD4-91DA-3737CD5CD6E3/vcredist_x86.exe" -Arg "/q /norestart"
-
-# install vcredist 2015 for alacritty
-InstallUrl -DisplayName "Microsoft Visual C\+\+ 2015 Redistributable \(x64\)" -Url "https://download.microsoft.com/download/0/6/4/064F84EA-D1DB-4EAA-9A5C-CC2F0FF6A638/vc_redist.x64.exe" -Arg "/q /norestart"
-
 # install 7z
 InstallUrl -DisplayName 7-Zip -Url "https://www.7-zip.org/a/7z1805-x64.exe" -Arg /S
 
