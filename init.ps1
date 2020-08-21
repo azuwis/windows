@@ -26,6 +26,17 @@ function CreateShortcut {
     }
 }
 
+function EnableWslService {
+    param($Service,$Process)
+    if ($Process -eq $null) {
+        $Process = $Service
+    }
+    CreateShortcut -Shortcut "$Startup\wsl-$Service.lnk" -TargetPath C:\Windows\System32\wsl.exe -Arguments "sudo service $Service start" -WindowStyle 7
+    if (-not (Get-Process $Process -ErrorAction Ignore)) {
+        Invoke-Item -Path "$Startup\wsl-$Service.lnk"
+    }
+}
+
 function DefenderExcludeAppx {
     param($Name)
     Get-AppxPackage -Name $Name | Select-Object -ExpandProperty PackageFamilyName | ForEach-Object {
@@ -199,13 +210,13 @@ UnpackUrl -Url "https://github.com/kghost/qterminal/releases/download/0.9.0-wsl.
 CreateShortcut -Shortcut "$Desktop\QTerminal.lnk" -TargetPath "$Programs\QTerminal\QTerminal.exe"
 
 # auto start sshd
-CreateShortcut -Shortcut "$Startup\sshd.lnk" -TargetPath C:\Windows\System32\wsl.exe -Arguments "sudo service ssh start" -WindowStyle 7
-if (-not (Get-Process sshd -ErrorAction Ignore)) {
-    Invoke-Item -Path "$Startup\sshd.lnk"
-}
+EnableWslService -Service ssh -Process sshd
 
 # allow sshd firewall inbound
 FirewallRule -DisplayName "WSL OpenSSH Server" -LocalPort 22
+
+# auto start cron
+EnableWslService -Service cron
 
 # whitelist wsl in windows defender
 DefenderExcludeAppx -Name TheDebianProject.DebianGNULinux
