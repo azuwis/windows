@@ -15,6 +15,7 @@ MakeDir -Dir $Programs
 function CreateShortcut {
     param($Shortcut,$TargetPath,$Arguments,$WindowStyle)
     if (-not (Test-Path $Shortcut)) {
+        Write-Host "CreateShortcut: $Shortcut -> $TargetPath"
         $ws = New-Object -ComObject ("WScript.Shell")
         $sc = $ws.CreateShortcut($Shortcut)
         $sc.TargetPath = $TargetPath
@@ -35,6 +36,7 @@ function DefenderExcludeAppx {
 function DefenderExcludePath {
     param($Path)
     if (-not (Get-MpPreference | Select-Object -ExpandProperty ExclusionPath) -contains $Path) {
+        Write-Host "DefenderExcludePath: $Path"
         RunAsAdmin "Set-MpPreference -ExclusionPath `"$Path`""
     }
 }
@@ -42,6 +44,7 @@ function DefenderExcludePath {
 function FirewallRule {
     param($DisplayName,$Action = "Allow",$Protocol = "TCP",$LocalPort)
     if (-not (Get-NetFirewallRule -DisplayName $DisplayName -ErrorAction Ignore)) {
+        Write-Host "FirewallRule: $Action $Protocol $LocalPort"
         RunAsAdmin "New-NetFirewallRule -DisplayName `"$DisplayName`" -Action `"$Action`" -Protocol `"$Protocol`" -LocalPort `"$LocalPort`""
     }
 }
@@ -58,6 +61,7 @@ function InstallUrl {
             Import-Module BitsTransfer
             Start-BitsTransfer -Description "Downloading $DisplayName installer from $Url" -Source $Url -Destination $output
         }
+        Write-Host "InstallUrl: $DisplayName"
         if ($Arg) {
             Start-Process $output -ArgumentList $Arg
         } else {
@@ -76,6 +80,7 @@ function Registry {
         $command = "Set-ItemProperty `"$Path`" -Name `"$Name`" -Type $Type -Force -Value "
     }
     if (-not ($command -eq "")) {
+        Write-Host "Registry: $Path!$Name -> $Value"
         if ($Type -eq "String") {
             $command += "`"$Value`""
         } else {
@@ -106,6 +111,7 @@ function UnpackUrl {
             Import-Module BitsTransfer
             Start-BitsTransfer -Description "Downloading $File from $Url" -Source $Url -Destination $Output
         }
+        Write-Host "UnpackUrl: $Url -> $UnpackDir"
         switch ((Get-Item $Output).Extension) {
             '.zip' {
                 $shell = New-Object -com shell.application
